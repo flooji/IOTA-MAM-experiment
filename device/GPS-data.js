@@ -24,11 +24,11 @@ port.pipe(parser)
 const getGPS = () => {
 
     const packet = {
-        time: gps.state.time,
-        lat: gps.state.lat,
-        lon: gps.state.lon,
-        alt: gps.state.alt,
-        speed: gps.state.speed,  
+        time:   gps.state.time,
+        lat:    gps.state.lat,
+        lon:    gps.state.lon,
+        alt:    gps.state.alt,
+        speed:  gps.state.speed,  
         processedLines: gps.state.processed,
     }
     console.log(packet)
