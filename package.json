@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/flooji/IOTA-MAM-experiment/issues"
   },
-  "homepage": "https://github.com/flooji/IOTA-MAM-experiment#readme"
+  "homepage": "https://github.com/flooji/IOTA-MAM-experiment#readme",
+  "dependencies": {
+    "gps": "^0.5.3"
+  }
 }
