@@ -1,0 +1,19 @@
+{
+  "name": "iota-mam-experiment",
+  "version": "1.0.0",
+  "description": "publish GPS-data to tangle",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flooji/IOTA-MAM-experiment.git"
+  },
+  "author": "flooji",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flooji/IOTA-MAM-experiment/issues"
+  },
+  "homepage": "https://github.com/flooji/IOTA-MAM-experiment#readme"
+}
