@@ -5,7 +5,7 @@ const GPS = require('gps')
 
 const gps = new GPS
 var file = '/dev/ttyS0'
-const interval = 5 //every x sec
+const interval = 15 //every x sec
 
 // SerialPort.list(function (err, ports) {
 //   console.log(ports);
