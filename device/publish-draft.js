@@ -1,5 +1,6 @@
 const Mam = require('@iota/mam')
 const { asciiToTrytes } = require('@iota/converter')
+const fs = require('fs')
 
 //GPS set up
 const SerialPort = require('serialport')
