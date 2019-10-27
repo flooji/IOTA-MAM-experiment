@@ -1,4 +1,3 @@
-
 const Mam = require('@iota/mam')
 const { asciiToTrytes } = require('@iota/converter')
 
@@ -23,15 +22,12 @@ const parser = new parsers.Readline({
 
 //MAM set up
 const mode = 'restricted'
-const sideKey = 'HELLOCANYOUHEARME'
 const provider = 'https://nodes.devnet.iota.org'
 const mamExplorerLink = `https://mam-explorer.firebaseapp.com/?provider=${encodeURIComponent(provider)}&mode=${mode}&root=`
 
-const seed = '9XBAZWXXJ9OUZOC9JMVMLEOBJZVHOJGTJZIEBFGMKVXBHDECWVNEYNZZQPVVCXVGDCUQVWDYVYZPLIXMW'
-
 // Initialise MAM state
-let mamState = Mam.init(provider,seed)
-mamState = Mam.changeMode(mamState, mode, sideKey)
+let stored_state = fs.readFileSync('mam_state.json')
+let mamState = JSON.parse(stored_state)
 
 //Publishes mam message
 const publish = async packet => {
@@ -41,6 +37,10 @@ const publish = async packet => {
 
     // Save new mamState
     mamState = message.state
+    fs.writeFile(`mam_state.json`, JSON.stringify(mamState), function (err) {
+        if (err) throw err
+        console.log(`File mam_state.json created successfully.`)
+    })
 
     // Attach the payload
     await Mam.attach(message.payload, message.address, 3, 9)
@@ -54,7 +54,7 @@ const publish = async packet => {
 
 //Get GPS data and publish to tangle
 const publishGPS = async () => {
-    if(gps.state.lat){
+    //if(gps.state.lat){
     let dataObj = {
         time:   gps.state.time,
         lat:    gps.state.lat,
@@ -69,7 +69,7 @@ const publishGPS = async () => {
         timestamp: (new Date()).toLocaleString()
     })
     console.log(`Verify with MAM Explorer:\n${mamExplorerLink}${root}\n`)
-  } else console.log(`No GPS-signal... Will try again in ${interval} seconds.`)
+ // } else console.log(`No GPS-signal... Will try again in ${interval} seconds.`)
 }
 
 
