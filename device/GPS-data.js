@@ -1,11 +1,16 @@
+//GPS setup
+const GPS = require('gps')
+const gps = new GPS //create GPS state object
 
+//Interval of getting GPS data
+const interval = 15 //every x sec
+
+//Serial port configuration
 const SerialPort = require('serialport')
 const parsers = SerialPort.parsers
-const GPS = require('gps')
 
-const gps = new GPS
-var file = '/dev/ttyS0'
-const interval = 15 //every x sec
+//Port address
+const file = '/dev/ttyS0'
 
 const parser = new parsers.Readline({
   delimiter: '\r\n'
@@ -15,13 +20,10 @@ const port = new SerialPort(file, {
   baudRate: 9600
 })
 
-port.on('error', function(err) {
-  console.log(`Error with port configuration: \n${err}\nExit program`)
-  process.exit(1)
-})
-
+//Parse data from port
 port.pipe(parser)
 
+//Get single parameters from GPS state object
 const getGPS = () => {
 
     const packet = {
@@ -38,6 +40,12 @@ const getGPS = () => {
 //Set interval to get GPS data
 setInterval(getGPS,interval*1000)
 
+//update GPS state object when data available
 parser.on('data', function(data) {
   gps.update(data)
+})
+
+port.on('error', function(err) {
+  console.log(`Error with port configuration: \n${err}\nExit program`)
+  process.exit(1)
 })

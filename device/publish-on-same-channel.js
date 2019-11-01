@@ -1,15 +1,28 @@
+/*
+ * @Author: florence.pfammatter 
+ * @Date: 2019-11-01 14:52:20 
+ * @Last Modified by: florence.pfammatter
+ * @Last Modified time: 2019-11-01 14:58:56
+ */
+
+//Require MAM package from iota.js
 const Mam = require('@iota/mam')
 const { asciiToTrytes } = require('@iota/converter')
+
 const fs = require('fs')
 
-//GPS set up
+//GPS setup
+const GPS = require('gps')
+const gps = new GPS
+
+//Interval of getting GPS data
+const interval = 15 //every x sec
+
+//Serial port setup
 const SerialPort = require('serialport')
 const parsers = SerialPort.parsers
-const GPS = require('gps')
 
-const gps = new GPS
-const file = '/dev/ttyS0'
-const interval = 15 //every x sec
+const file = '/dev/ttyS0' //Port address
 
 const parser = new parsers.Readline({
     delimiter: '\r\n'
@@ -18,16 +31,25 @@ const parser = new parsers.Readline({
   const port = new SerialPort(file, {
     baudRate: 9600
   })
-  
-  port.pipe(parser)
 
+
+port.on('error', function(err) {
+  console.log(`Error with port configuration: \n${err}\nExit program`)
+  process.exit(1)
+})
+
+port.pipe(parser) //Parse data from port
+
+//MAM setup
 const mode = 'restricted'
 const sideKey = 'VERYSECRETKEYFORME'
 const provider = 'https://nodes.devnet.iota.org'
-
 const mamExplorerLink = `https://mam-explorer.firebaseapp.com/?provider=${encodeURIComponent(provider)}&mode=${mode}&key=${sideKey.padEnd(81, '9')}&root=`
+
+//Put your own seed here 
 const seed = 'LHOSEFEJOREBERAKWDFHIWMA9DKGFOEPJBLWWVRTFRZBZSTVOZZWRVWRDDQMKIRYVRFXBQDYNEHAXPTED'
 
+//Initialize MAM state - recover previous state
 Mam.init(provider,seed)
 let stored = fs.readFileSync('mam_state.json','utf8')
 console.log('Stored: ',stored)
@@ -71,10 +93,10 @@ const publishGPS = async () => {
   return root
 }
 
-//set interval to publish data
+//Set interval to publish data
 setInterval(publishGPS,interval*1000)
 
-  //when data available parse it and update gps-state object
+//Update GPS state object when data available
 parser.on('data', function(data) {
   gps.update(data)
 })
