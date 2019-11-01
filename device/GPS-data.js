@@ -7,16 +7,17 @@ const gps = new GPS
 var file = '/dev/ttyS0'
 const interval = 15 //every x sec
 
-// SerialPort.list(function (err, ports) {
-//   console.log(ports);
-// })
-
 const parser = new parsers.Readline({
   delimiter: '\r\n'
 })
 
 const port = new SerialPort(file, {
   baudRate: 9600
+})
+
+port.on('error', function(err) {
+  console.log(`Error with port configuration: \n${err}\nExit program`)
+  process.exit(1)
 })
 
 port.pipe(parser)
@@ -34,7 +35,7 @@ const getGPS = () => {
     console.log(packet)
 }
 
-//set interval to get GPS data
+//Set interval to get GPS data
 setInterval(getGPS,interval*1000)
 
 parser.on('data', function(data) {

@@ -2,11 +2,11 @@ const Mam = require('@iota/mam')
 const fs = require('fs')
 
 const mode = 'restricted'
-const sideKey = 'VERYSECRETKEYFORME'
+const sideKey = 'notASecret'
 const provider = 'https://nodes.devnet.iota.org'
 
-const seed = 'VUTHAFSCJEMBMWAVPRXMFGTJEKCIXFYKVESJIBEDWRKQVEWFDDTFYKUZNDSHMBLFPUAJINQPOPIEWTRTX'
-
+const seed = 'ZGNOMVEEGOBZYXZKDZNZQGMSCWOVADAFAGJEZIJRNRJWQIHEEONAHWXQYDVXVZNFORMXXBR9BAGNGUGUL'
+//old: 'VUTHAFSCJEMBMWAVPRXMFGTJEKCIXFYKVESJIBEDWRKQVEWFDDTFYKUZNDSHMBLFPUAJINQPOPIEWTRTX'
 
 // Initialise MAM State
 let initial = Mam.init(provider,seed)

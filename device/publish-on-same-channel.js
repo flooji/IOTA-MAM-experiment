@@ -8,7 +8,7 @@ const parsers = SerialPort.parsers
 const GPS = require('gps')
 
 const gps = new GPS
-var file = '/dev/ttyS0'
+const file = '/dev/ttyS0'
 const interval = 15 //every x sec
 
 const parser = new parsers.Readline({
