@@ -23,6 +23,8 @@ const port = new SerialPort(file, {
 //Parse data from port
 port.pipe(parser)
 
+console.log(`Serial port ${file} is opened and configured.\nMessages will appear all ${interval} sec. Please wait...`)
+
 //Get single parameters from GPS state object
 const getGPS = () => {
 
@@ -46,6 +48,6 @@ parser.on('data', function(data) {
 })
 
 port.on('error', function(err) {
-  console.log(`Error with port configuration: \n${err}\nExit program`)
+  console.log(`Error with port configuration:\n${err}\nExit program`)
   process.exit(1)
 })

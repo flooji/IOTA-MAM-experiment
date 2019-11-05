@@ -2,7 +2,7 @@
  * @Author: florence.pfammatter 
  * @Date: 2019-11-01 14:52:20 
  * @Last Modified by: florence.pfammatter
- * @Last Modified time: 2019-11-01 14:58:56
+ * @Last Modified time: 2019-11-01 15:03:52
  */
 
 //Require MAM package from iota.js
@@ -49,12 +49,17 @@ const mamExplorerLink = `https://mam-explorer.firebaseapp.com/?provider=${encode
 //Put your own seed here 
 const seed = 'LHOSEFEJOREBERAKWDFHIWMA9DKGFOEPJBLWWVRTFRZBZSTVOZZWRVWRDDQMKIRYVRFXBQDYNEHAXPTED'
 
-//Initialize MAM state - recover previous state
+//Initialize MAM state object
 Mam.init(provider,seed)
+
+//Recover previous MAM state
 let stored = fs.readFileSync('mam_state.json','utf8')
 console.log('Stored: ',stored)
+
 let mamState = JSON.parse(stored)
 console.log('MamState: ',mamState)
+
+//Change MAM state to previous and change mode
 Mam.changeMode(mamState, mode, sideKey)
 
 // Publish to tangle

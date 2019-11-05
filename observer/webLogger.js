@@ -1,3 +1,4 @@
+//from official IOTA example, changed to use case
 const TRYTE_ALPHABET = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const asciiToTrytes = input => {
   let trytes = ""
@@ -51,13 +52,18 @@ const trytesToAscii = trytes => {
     // Output syncronously once fetch is completed
     const result = await Mam.fetch(root, mode)
     result.messages.forEach(message => {
+
+      //Parse message
       const messageString = trytesToAscii(message)
       const jsonObj = JSON.parse(messageString)
+
+      //Get stored GPS data
       const time = jsonObj['message']['time']
       const latitude = jsonObj['message']['lat']
       const longitude = jsonObj['message']['lon']
       const altitude = jsonObj['message']['alt']
       const speed = jsonObj['message']['speed']
+
       outputHtml.innerHTML += `Fetched and parsed<br/>
       Time: ${time} Latitude: ${latitude} Longitude: ${longitude} Altitude: ${altitude} Speed: ${speed}<br/>`
     })

@@ -2,7 +2,7 @@
  * @Author: florence.pfammatter 
  * @Date: 2019-11-01 14:41:50 
  * @Last Modified by: florence.pfammatter
- * @Last Modified time: 2019-11-01 14:59:46
+ * @Last Modified time: 2019-11-05 10:14:28
  */
 
 //Require MAM package from iota.js
@@ -99,4 +99,3 @@ setInterval(publishGPS,interval*1000)
 parser.on('data', function(data) {
     gps.update(data)
   })
-
