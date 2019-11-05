@@ -1,45 +1,44 @@
-//Require MAM package from iota.js
-const Mam = require('@iota/mam')
-const {trytesToAscii } = require('@iota/converter')
+/*
+ * @Author: florence.pfammatter 
+ * @Date: 2019-11-01 11:46:26 
+ * @Last Modified by: florence.pfammatter
+ * @Last Modified time: 2019-11-05 18:58:40
+ * @Description: Verify if a provided claim is valid by comparing it to the hashed claim on the IOTA tangle
+ */
 
-//MAM setup
+//Require Mam package from iota.js
+const Mam = require('@iota/mam')
+const { trytesToAscii } = require('@iota/converter')
+
+//MAM setup 
 const mode = 'restricted'
-const sideKey = 'mysecret'
+const sideKey = 'HELLOCANYOUHEARME'
 const provider = 'https://nodes.devnet.iota.org'
 
 const mamExplorerLink = `https://mam-explorer.firebaseapp.com/?provider=${encodeURIComponent(provider)}&mode=${mode}&key=${sideKey.padEnd(81, '9')}&root=`
 
-// Initialise MAM State
+// Initialise MAM State object
 let mamState = Mam.init(provider)
 
 //Set channel mode
 mamState = Mam.changeMode(mamState, mode, sideKey)
 
-const getRoot = async () => {
-  //Here a packet could be published and its root returned
-  const root = "O9SBQTUCWBLZJPVGNZYGFLQXSBIWNWJLREOWKDRBKWAWPNNFFNJEQCYDAWSORJLPJSJIHIFQYDYLJYXVJ"//"DQEN9WBGPUDSEQQBKGMUVXITBIPQL9PCQVQEQFXIEJSTYCPXCXMLATGPBSXSEFRKJHUVGVWCIKZLZTRVD"//"IQQXVZ9QIBDVX9LKJPJYCCVSZZQEXKOZGPHOWHUSEEITHJGFJDNKIGL99ATQXTDOOXALF99FHEATKCAVH"
-    return root
+//Make sure to use the correct root/channelID for the fetch
+const channelID = "YBGAAW9PMGUIFONOBOFQPGAZFOT9YLEXPJNTZWJQFIQYKXMASYSZCSVCKBZKLPJEIFGODUWYBPWLLTIVV"
+
+let fetchData = async (root) => {
+
+console.log('Fetch data from the tangle. Please be patient...')
+
+//Fetch data from tangle
+await Mam.fetch(root, mode).then(data => {
+    
+    data.messages.forEach(message => console.log('Fetched and parsed', JSON.parse(trytesToAscii(message)), '\n'))
+    console.log(`Verify with MAM Explorer:\n${mamExplorerLink}${root}\n`)
+
+}).catch(err => {
+    console.log(err)
+})
 }
 
-//Callback used to pass data out of the fetch
-const logData = data => console.log('Fetched and parsed', JSON.parse(trytesToAscii(data)), '\n')
-
-getRoot()
-  .then(async root => {
-    try {
-      console.log('Fetch started...\nPlease wait a few seconds: \n')
-      //Output asyncronously using "logData" callback function
-      await Mam.fetch(root, mode, sideKey, logData)
-  
-      // Output syncronously once fetch is completed
-      const result = await Mam.fetch(root, mode, sideKey)
-      await result.messages.forEach(message => console.log('Fetched and parsed', JSON.parse(trytesToAscii(message)), '\n'))
-  
-      console.log(`Verify with MAM Explorer:\n${mamExplorerLink}${root}\n`)
-    } catch (err) {
-
-      console.log(`Error fetching the data:\n${err}\nProgram exit`)
-      process.exit(1)
-    }
-  })
-
+fetchData(channelID)

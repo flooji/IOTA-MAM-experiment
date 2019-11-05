@@ -2,7 +2,7 @@
  * @Author: florence.pfammatter 
  * @Date: 2019-11-01 14:41:50 
  * @Last Modified by: florence.pfammatter
- * @Last Modified time: 2019-11-05 10:14:28
+ * @Last Modified time: 2019-11-05 10:36:47
  */
 
 //Require MAM package from iota.js
@@ -39,6 +39,8 @@ port.on('error', function(err) {
 //Parse data from port
 port.pipe(parser)
 
+console.log(`Serial port ${file} is opened and configured.\nMessages will appear all ${interval} sec. Please wait...`)
+
 //MAM set up
 const mode = 'restricted'
 const sideKey = 'HELLOCANYOUHEARME'
@@ -67,7 +69,6 @@ const publish = async packet => {
     console.log('Published', packet, '\n');
     console.log(`Root: ${message.root}\n`)
     console.log(`Address: ${message.address}`)
-    console.log(`State: ${message.state}\n`)
     return message.root
 }
 
