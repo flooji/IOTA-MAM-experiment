@@ -21,7 +21,7 @@ const trytesToAscii = trytes => {
 }
 (async function() {
   const mode = 'restricted'
-  const sideKey = 'mysecret'
+  const sideKey = 'HELLOCANYOUHEARME'
   const provider = "https://nodes.devnet.iota.org"
   const mamExplorerLink = `https://mam-explorer.firebaseapp.com/?provider=${encodeURIComponent(provider)}&mode=${mode}&root=`
   const outputHtml = document.querySelector("#output")
@@ -31,46 +31,55 @@ const trytesToAscii = trytes => {
 
   // Set channel mode
   mamState = Mam.changeMode(mamState, mode, sideKey)
-  
-  const getRoot = async () => {
-    const root = "9TAOMHBDKDBDKCFIITYVAAMYHVYDQOTCYYLBSYMDUGBFGXZCFKRBGF9VMSJWJBFCLZJBVOEEFHYPE9HWY"
-    return root
-}
 
-  // Callback used to pass data out of the fetch
-  const logData = data =>
-    (outputHtml.innerHTML += `Fetched and parsed ${JSON.parse(
-      trytesToAscii(data)
-    )}<br/>`)
+  //Make sure to use the correct root/channelID for the fetch
+  const channelID = "YBGAAW9PMGUIFONOBOFQPGAZFOT9YLEXPJNTZWJQFIQYKXMASYSZCSVCKBZKLPJEIFGODUWYBPWLLTIVV"
 
-  getRoot()
-  .then(async root => {
+  let fetchData = async (root) => {
 
-    // Output asyncronously using "logData" callback function
-    await Mam.fetch(root, mode, sideKey, logData)
+    outputHtml.innerHTML += 'Fetch data from the tangle. Please be patient...<br/>'
+    
+    //Fetch data from tangle
+    await Mam.fetch(root, mode).then(data => {
+        let counter = 1
+        data.messages.forEach(message => {
+                //Parse message
+                const messageString = trytesToAscii(message)
+                const jsonObj = JSON.parse(messageString)
 
-    // Output syncronously once fetch is completed
-    const result = await Mam.fetch(root, mode)
-    result.messages.forEach(message => {
-
-      //Parse message
-      const messageString = trytesToAscii(message)
-      const jsonObj = JSON.parse(messageString)
-
-      //Get stored GPS data
-      const time = jsonObj['message']['time']
-      const latitude = jsonObj['message']['lat']
-      const longitude = jsonObj['message']['lon']
-      const altitude = jsonObj['message']['alt']
-      const speed = jsonObj['message']['speed']
-
-      outputHtml.innerHTML += `Fetched and parsed<br/>
-      Time: ${time} Latitude: ${latitude} Longitude: ${longitude} Altitude: ${altitude} Speed: ${speed}<br/>`
+                //Get stored GPS data
+                const time = jsonObj['message']['time']
+                const latitude = jsonObj['message']['lat']
+                const longitude = jsonObj['message']['lon']
+                const altitude = jsonObj['message']['alt']
+                const speed = jsonObj['message']['speed']
+                
+                outputHtml.innerHTML += `Fetched and parsed message Nr.${counter}:<br/>Time: ${time} Latitude: ${latitude} Longitude: ${longitude} Altitude: ${altitude} Speed: ${speed}<br/>`
+                ++counter
+          // outputHtml.innerHTML += `Fetched and parsed ${JSON.parse(trytesToAscii(message))}<br/>`
+        })
+        outputHtml.innerHTML += `Verify with MAM Explorer:<br/><a target="_blank" href="${mamExplorerLink}${root}">${mamExplorerLink}${root}</a>`
+    
+    }).catch(err => {
+        console.log(err)
     })
+    }
+    
+    fetchData(channelID)
 
-    outputHtml.innerHTML += `Verify with MAM Explorer:<br/><a target="_blank" href="${mamExplorerLink}${root}">${mamExplorerLink}${root}</a>`
 
-  })
+  // // Callback used to pass data out of the fetch
+  // const logData = data =>
+  //   (outputHtml.innerHTML += `Fetched and parsed ${JSON.parse(
+  //     trytesToAscii(data)
+  //   )}<br/>`)
+
+
+
+  //   })
+
+    
+  // })
 
   
 })()
