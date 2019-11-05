@@ -66,20 +66,4 @@ const trytesToAscii = trytes => {
     }
     
     fetchData(channelID)
-
-
-  // // Callback used to pass data out of the fetch
-  // const logData = data =>
-  //   (outputHtml.innerHTML += `Fetched and parsed ${JSON.parse(
-  //     trytesToAscii(data)
-  //   )}<br/>`)
-
-
-
-  //   })
-
-    
-  // })
-
-  
 })()
