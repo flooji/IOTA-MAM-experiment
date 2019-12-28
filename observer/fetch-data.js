@@ -2,7 +2,7 @@
  * @Author: florence.pfammatter 
  * @Date: 2019-11-01 11:46:26 
  * @Last Modified by: florence.pfammatter
- * @Last Modified time: 2019-11-05 18:58:40
+ * @Last Modified time: 2019-11-05 20:14:01
  * @Description: Verify if a provided claim is valid by comparing it to the hashed claim on the IOTA tangle
  */
 

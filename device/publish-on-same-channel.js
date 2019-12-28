@@ -2,7 +2,7 @@
  * @Author: florence.pfammatter 
  * @Date: 2019-11-01 14:52:20 
  * @Last Modified by: florence.pfammatter
- * @Last Modified time: 2019-11-01 15:03:52
+ * @Last Modified time: 2019-12-28 19:00:52
  */
 
 //Require MAM package from iota.js
@@ -80,6 +80,7 @@ const publish = async packet => {
 }
 
 const publishGPS = async () => {
+  if(gps.state.lat){ //checks if GPS signal is available
   let dataObj = {
     time:   gps.state.time,
     lat:    gps.state.lat,
@@ -96,6 +97,7 @@ const publishGPS = async () => {
   console.log(`Verify with MAM Explorer:\n${mamExplorerLink}${root}\n`)
   console.log('Root: ',root)
   return root
+} else console.log(`No GPS-signal... Will try again in ${interval} seconds.`)
 }
 
 //Set interval to publish data
