@@ -54,7 +54,7 @@ Mam.init(provider,seed)
 
 //Recover previous MAM state
 let stored = fs.readFileSync('mam_state.json','utf8')
-console.log('Stored: ',stored)
+//console.log('Stored: ',stored)
 
 let mamState = JSON.parse(stored)
 console.log('MamState: ',mamState)
