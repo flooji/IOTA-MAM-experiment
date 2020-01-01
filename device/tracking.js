@@ -88,13 +88,13 @@ const publish = async packet => {
   await Mam.attach(message.payload, message.address, 3, 9)
 
   console.log('Published', packet, '\n')
-  console.log(message.address, '\n')
+  console.log('Address', message.address, '\n')
   return message.root
 }
 
 const publishGPS = async () => {
-
-  let gpsData = getGPS()
+  if(gps.state.lat) {
+    let gpsData = getGPS()
 
   const root = await publish({
     message: gpsData,
@@ -102,10 +102,12 @@ const publishGPS = async () => {
   })
  
   console.log(`Verify with MAM Explorer:\n${mamExplorerLink}${root}\n`)
-  console.log('Root: ',root)
+  console.log('Root: ',root,'\n')
   return root
- 
- }
+  } else {
+    console.log(`No GPS-signal... Will try again in ${interval} seconds.\n`)
+  }
+}
 
 //action--------------------------------------------------------------
 
