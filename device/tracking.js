@@ -87,7 +87,8 @@ const publish = async packet => {
   // Attach the payload
   await Mam.attach(message.payload, message.address, 3, 9)
 
-  console.log('Published', packet, '\n');
+  console.log('Published', packet, '\n')
+  console.log(message.address, '\n')
   return message.root
 }
 
@@ -108,10 +109,10 @@ const publishGPS = async () => {
 
 //action--------------------------------------------------------------
 
-getGPS()
+publishGPS()
 
 //Set interval to get GPS data
-setInterval(getGPS,interval*1000)
+setInterval(publishGPS,interval*1000)
 
 //update GPS state object when data available
 parser.on('data', function(data) {
