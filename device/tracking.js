@@ -13,7 +13,7 @@ const provider = 'https://nodes.devnet.iota.org'
 const mamExplorerLink = `https://mam-explorer.firebaseapp.com/?provider=${encodeURIComponent(provider)}&mode=${mode}&key=${sideKey.padEnd(81, '9')}&root=`
 
 //Put your own seed here 
-const seed = 'ZBGQSIAMSOEBDEGKZRLCIA9ZARRRIYMYBPBYCVFY9LVGOVQTOSVQKYOAIPMQHOCMTKDJAZYXVYFEDGZBI'
+const seed = 'BSIFU9HDPLRQNRKIKBJXYJYWBSPCQIMZQIHZDUG9BCSVRINUJMDEHLUUKEAVRZZWNSTVJVVDXGDJMJERZ'
 
 //Initialize MAM state object
 Mam.init(provider,seed)
