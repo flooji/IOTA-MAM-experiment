@@ -8,7 +8,7 @@ const fs = require('fs')
 
 //MAM setup
 const mode = 'restricted'
-const sideKey = 'AkdeoEIXx'
+const sideKey = 'GPSTRACKERSCCHAIN'
 const provider = 'https://nodes.devnet.iota.org'
 const mamExplorerLink = `https://mam-explorer.firebaseapp.com/?provider=${encodeURIComponent(provider)}&mode=${mode}&key=${sideKey.padEnd(81, '9')}&root=`
 
