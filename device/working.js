@@ -15,7 +15,6 @@ const file = '/dev/ttyS0'
 const parser = new parsers.Readline({
   delimiter: '\r\n'
 })
-
 const port = new SerialPort(file, {
   baudRate: 9600
 })
@@ -28,8 +27,8 @@ console.log(`Serial port ${file} is opened and configured.\nMessages will appear
 //Get single parameters from GPS state object
 const getGPS = () => {
 
-    const packet = {
-        time:   gps.state.time,
+let packet = {
+	      time:   gps.state.time,
         lat:    gps.state.lat,
         lon:    gps.state.lon,
         alt:    gps.state.alt,
@@ -48,6 +47,6 @@ parser.on('data', function(data) {
 })
 
 port.on('error', function(err) {
-  console.log(`Error with port configuration:\n${err}\nExit program`)
+  console.log(`Error with port configuration: \n${err}\nExit program`)
   process.exit(1)
 })
