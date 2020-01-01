@@ -16,7 +16,7 @@ const GPS = require('gps')
 const gps = new GPS
 
 //Interval of getting GPS data
-const interval = 15 //every x sec
+const interval = 60 //every x sec
 
 //Serial port setup
 const SerialPort = require('serialport')
@@ -42,12 +42,13 @@ port.pipe(parser) //Parse data from port
 
 //MAM setup
 const mode = 'restricted'
-const sideKey = 'VERYSECRETKEYFORME'
+const sideKey = 'kaoECNFlxi'
 const provider = 'https://nodes.devnet.iota.org'
 const mamExplorerLink = `https://mam-explorer.firebaseapp.com/?provider=${encodeURIComponent(provider)}&mode=${mode}&key=${sideKey.padEnd(81, '9')}&root=`
 
 //Put your own seed here 
-const seed = 'LHOSEFEJOREBERAKWDFHIWMA9DKGFOEPJBLWWVRTFRZBZSTVOZZWRVWRDDQMKIRYVRFXBQDYNEHAXPTED'
+const seed = 'PHEQASRURUYOJHR9KHTOESXYZTAIHIFRQSPAKNXBIIUIHRDZJQBIJVGIQYLXGVJELZZNDFYPKKR9JXEKO' 
+//'LHOSEFEJOREBERAKWDFHIWMA9DKGFOEPJBLWWVRTFRZBZSTVOZZWRVWRDDQMKIRYVRFXBQDYNEHAXPTED'
 
 //Initialize MAM state object
 Mam.init(provider,seed)
@@ -80,7 +81,7 @@ const publish = async packet => {
 }
 
 const publishGPS = async () => {
-  if(gps.state.lat){ //checks if GPS signal is available
+ // if(gps.state.lat){ //checks if GPS signal is available
   let dataObj = {
     time:   gps.state.time,
     lat:    gps.state.lat,
@@ -97,8 +98,10 @@ const publishGPS = async () => {
   console.log(`Verify with MAM Explorer:\n${mamExplorerLink}${root}\n`)
   console.log('Root: ',root)
   return root
-} else console.log(`No GPS-signal... Will try again in ${interval} seconds.`)
+//} else console.log(`No GPS-signal... Will try again in ${interval} seconds.`)
 }
+
+publishGPS()
 
 //Set interval to publish data
 setInterval(publishGPS,interval*1000)

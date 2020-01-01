@@ -1,16 +1,18 @@
-//GPS setup
-const GPS = require('gps')
-const gps = new GPS //create GPS state object
+var file = '/dev/ttyS0'
 
-//Interval of getting GPS data
-const interval = 15 //every x sec
-
-//Serial port configuration
 const SerialPort = require('serialport')
 const parsers = SerialPort.parsers
 
-//Port address
-const file = '/dev/ttyS0'
+const fs = require('fs')
+
+//Interval of getting GPS data
+const interval = 15 //every x sec      
+
+/*
+SerialPort.list(function (err, ports) {
+  console.log(ports);
+});
+ */
 
 const parser = new parsers.Readline({
   delimiter: '\r\n'
@@ -20,14 +22,17 @@ const port = new SerialPort(file, {
   baudRate: 9600
 })
 
-//Parse data from port
 port.pipe(parser)
 
-console.log(`Serial port ${file} is opened and configured.\nMessages will appear all ${interval} sec. Please wait...`)
+
+var GPS = require('gps')
+var gps = new GPS
 
 //Get single parameters from GPS state object
 const getGPS = () => {
 
+    gps.on('data', function(data) {
+    //console.log(gps.state)
     const packet = {
         time:   gps.state.time,
         lat:    gps.state.lat,
@@ -36,18 +41,23 @@ const getGPS = () => {
         speed:  gps.state.speed,  
         processedLines: gps.state.processed,
     }
+
     console.log(packet)
+    // Save new packet
+    fs.writeFileSync('gps.json',JSON.stringify(packet))
+
+    })
 }
 
-//Set interval to get GPS data
-setInterval(getGPS,interval*1000)
+//   gps.on('data', function(data) {
+//    console.log(gps.state)
+//  })
 
-//update GPS state object when data available
 parser.on('data', function(data) {
   gps.update(data)
 })
 
-port.on('error', function(err) {
-  console.log(`Error with port configuration:\n${err}\nExit program`)
-  process.exit(1)
-})
+getGPS()
+
+//Set interval to get GPS data
+setInterval(getGPS,interval*1000)
