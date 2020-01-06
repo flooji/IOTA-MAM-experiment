@@ -93,7 +93,7 @@ The MAM state object will look something like this:
 As you can see, the start is at zero. Every published MAM message the index is increased by one. 
 
 In [tracking.js](https://github.com/flooji/IOTA-MAM-experiment/blob/master/device/tracking.js) the data packages are finally published to the tangle. 
-First the mam state object is initialized and then changed to the one in the file. Then the data from the serial port is parsed and then 
+First the mam state object is initialized and then changed to the one in the file. Then the data from the serial port is parsed and 
 published to the tangle with 
 ```javascript 
 await Mam.attach(message.payload, message.address, 3, 9) 
@@ -116,9 +116,9 @@ This will fetch the entire MAM channel starting from the given root. Depending o
 ```javascript
 await Mam.fetch(root,mode,sideKey,getCoordinate)
 ```
-If you would like to view the fetched data on a webpage use [weblogger.js](https://github.com/flooji/IOTA-MAM-experiment/blob/master/observer/webLogger.js) which followed the example of [this official IOTA tutorial](https://docs.iota.org/docs/client-libraries/0.1/mam/js/create-mam-webpage).
+If you would like to view the fetched data on a webpage take a look at [weblogger.js](https://github.com/flooji/IOTA-MAM-experiment/blob/master/observer/webLogger.js) which followed the example of [this official IOTA tutorial](https://docs.iota.org/docs/client-libraries/0.1/mam/js/create-mam-webpage).
 
-Next step would be to display this data on a map. I made a first example of that in my other repository [IOTA-GPS-Tracker](https://github.com/flooji/IOTA-GPS-Tracker).
+Next step would be to display the fetched data on a map. I made a first example of that in my other repository [IOTA-GPS-Tracker](https://github.com/flooji/IOTA-GPS-Tracker).
 
 ## Support
 
